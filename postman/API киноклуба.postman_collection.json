@@ -1,0 +1,395 @@
+{
+	"info": {
+		"_postman_id": "588b1be3-42b8-46b6-b93a-5881464b6db0",
+		"name": "API киноклуба",
+		"description": "Сценарий клиентской проверки финального проекта. Каждый запрос подписан буквой CRUD.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30833613"
+	},
+	"item": [
+		{
+			"name": "Create — POST /api/opinions/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const stamp = Date.now();",
+							"pm.collectionVariables.set('unique_text', 'Мнение из Postman — ' + stamp);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Create → 201', function () { pm.response.to.have.status(201); });",
+							"const body = pm.response.json();",
+							"pm.collectionVariables.set('opinion_id', body.opinion.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Тестовый фильм\",\n  \"text\": \"{{unique_text}}\",\n  \"source\": \"https://example.com/postman\",\n  \"added_by\": \"Postman\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/opinions/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"opinions",
+						""
+					]
+				},
+				"description": "CRUD: Create"
+			},
+			"response": []
+		},
+		{
+			"name": "Read many — GET /api/opinions/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/opinions/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"opinions",
+						""
+					]
+				},
+				"description": "CRUD: Read (list)"
+			},
+			"response": []
+		},
+		{
+			"name": "Read many + filter — GET /api/opinions/?title=",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/opinions/?title=матрица",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"opinions",
+						""
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "матрица"
+						}
+					]
+				},
+				"description": "CRUD: Read (list with title filter)"
+			},
+			"response": []
+		},
+		{
+			"name": "Read one — GET /api/opinions/<id>/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/opinions/{{opinion_id}}/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"opinions",
+						"{{opinion_id}}",
+						""
+					]
+				},
+				"description": "CRUD: Read one"
+			},
+			"response": []
+		},
+		{
+			"name": "Update — PATCH /api/opinions/<id>/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Тестовый фильм (обновлён)\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/opinions/{{opinion_id}}/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"opinions",
+						"{{opinion_id}}",
+						""
+					]
+				},
+				"description": "CRUD: Update (PATCH, частичное)"
+			},
+			"response": []
+		},
+		{
+			"name": "Read (random) — GET /api/opinions/random/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/opinions/random/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"opinions",
+						"random",
+						""
+					]
+				},
+				"description": "CRUD: Read (random)"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete — DELETE /api/opinions/<id>/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 204 No Content\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/opinions/{{opinion_id}}/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"opinions",
+						"{{opinion_id}}",
+						""
+					]
+				},
+				"description": "CRUD: Delete"
+			},
+			"response": []
+		},
+		{
+			"name": "Error 400 — POST без обязательных полей",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 400 Bad Request\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Без текста\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/opinions/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"opinions",
+						""
+					]
+				},
+				"description": "Валидация: 400 JSON message"
+			},
+			"response": []
+		},
+		{
+			"name": "Error 404 — GET несуществующего id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 404 Not Found\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/opinions/999999/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"opinions",
+						"999999",
+						""
+					]
+				},
+				"description": "Ошибка: 404 JSON message"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:5000"
+		},
+		{
+			"key": "opinion_id",
+			"value": "1"
+		},
+		{
+			"key": "unique_text",
+			"value": ""
+		}
+	]
+}
